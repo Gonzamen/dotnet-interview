@@ -2,7 +2,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.Dtos;
 using TodoApi.Models;
-using TodoApi.Services;
+using TodoApi.Services.TodoItem;
 
 namespace TodoApi.Controllers
 {
@@ -10,9 +10,9 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoItemController : ControllerBase
     {
-        private readonly ITodoService _todoService;
+        private readonly ITodoItemService _todoService;
 
-        public TodoItemController(ITodoService todoService)
+        public TodoItemController(ITodoItemService todoService)
         {
             _todoService = todoService;
         }

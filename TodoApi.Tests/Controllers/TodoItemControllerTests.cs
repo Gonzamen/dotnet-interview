@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Controllers;
 using TodoApi.Models;
-using TodoApi.Services;
-using TodoApi.Repositories;
+using TodoApi.Services.TodoItem;
+using TodoApi.Repositories.TodoItem;
 
 namespace TodoApi.Tests.Controllers;
 
@@ -62,7 +62,7 @@ public class TodoItemControllerTests
         {
             PopulateDatabaseContext(context);
 
-            var todoService = new TodoService(new TodoRepository(context));
+            var todoService = new TodoItemService(new TodoItemRepository(context));
             var controller = new TodoItemController(todoService);
 
             var result = await controller.GetTodoItemByList(1, 1);
@@ -77,7 +77,7 @@ public class TodoItemControllerTests
         using (var context = new TodoContext(DatabaseContextOptions()))
         {
             PopulateDatabaseContext(context);
-            var todoService = new TodoService(new TodoRepository(context));
+            var todoService = new TodoItemService(new TodoItemRepository(context));
             var controller = new TodoItemController(todoService);
             var result = await controller.GetTodoItemByList(1, 4);
             Assert.IsType<NotFoundObjectResult>(result.Result);
@@ -90,7 +90,7 @@ public class TodoItemControllerTests
         using (var context = new TodoContext(DatabaseContextOptions()))
         {
             PopulateDatabaseContext(context);
-            var todoService = new TodoService(new TodoRepository(context));
+            var todoService = new TodoItemService(new TodoItemRepository(context));
             var controller = new TodoItemController(todoService);
             var result = await controller.PostTodoItem(
                 1,
@@ -108,7 +108,7 @@ public class TodoItemControllerTests
         using (var context = new TodoContext(DatabaseContextOptions()))
         {
             PopulateDatabaseContext(context);
-            var todoService = new TodoService(new TodoRepository(context));
+            var todoService = new TodoItemService(new TodoItemRepository(context));
             var controller = new TodoItemController(todoService);
             var result = await controller.PutTodoItem(
                 1,
@@ -126,7 +126,7 @@ public class TodoItemControllerTests
         using (var context = new TodoContext(DatabaseContextOptions()))
         {
             PopulateDatabaseContext(context);
-            var todoService = new TodoService(new TodoRepository(context));
+            var todoService = new TodoItemService(new TodoItemRepository(context));
             var controller = new TodoItemController(todoService);
             var result = await controller.DeleteTodoItem(1, 1);
             Assert.IsType<NoContentResult>(result);
@@ -140,7 +140,7 @@ public class TodoItemControllerTests
         using (var context = new TodoContext(DatabaseContextOptions()))
         {
             PopulateDatabaseContext(context);
-            var todoService = new TodoService(new TodoRepository(context));
+            var todoService = new TodoItemService(new TodoItemRepository(context));
             var controller = new TodoItemController(todoService);
             var result = controller.DeleteAllTodoItems(1);
             Assert.IsType<AcceptedResult>(result);

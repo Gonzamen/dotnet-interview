@@ -1,37 +1,37 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoApi.Dtos;
-using TodoApi.Models;
-using TodoApi.Repositories;
+using Models = TodoApi.Models;
+using TodoApi.Repositories.TodoItem;
 
-namespace TodoApi.Services
+namespace TodoApi.Services.TodoItem
 {
-    public class TodoService : ITodoService
+    public class TodoItemService : ITodoItemService
     {
-        private readonly ITodoRepository _repository;
+        private readonly ITodoItemRepository _repository;
 
-        public TodoService(ITodoRepository repository)
+        public TodoItemService(ITodoItemRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<IEnumerable<TodoItem>> GetAllItemsByListIdAsync(long listId)
+        public async Task<IEnumerable<Models.TodoItem>> GetAllItemsByListIdAsync(long listId)
         {
             return await _repository.GetAllAsync(listId);
         }
 
-        public async Task<TodoItem> GetItemByIdAsync(long listId, long itemId)
+        public async Task<Models.TodoItem> GetItemByIdAsync(long listId, long itemId)
         {
             return await _repository.GetByIdAsync(listId, itemId);
         }
 
-        public async Task<TodoItem> CreateItemAsync(long listId, CreateTodoItem item)
+        public async Task<Models.TodoItem> CreateItemAsync(long listId, CreateTodoItem item)
         {
             var todoItem = await _repository.AddAsync(listId, item);
             return todoItem;
         }
 
-        public async Task<TodoItem> UpdateItemAsync(long itemId, UpdateTodoItem item)
+        public async Task<Models.TodoItem> UpdateItemAsync(long itemId, UpdateTodoItem item)
         {
             var todoItem = await _repository.UpdateAsync(itemId, item);
             return todoItem;
@@ -39,15 +39,13 @@ namespace TodoApi.Services
 
         public async Task<bool> DeleteItemAsync(long itemId)
         {
-            await _repository.DeleteAsync(itemId);
-            return true;
+            var isDeleted = await _repository.DeleteAsync(itemId);
+            return isDeleted;
         }
 
         public async Task DeleteAllItemsByListIdAsync(long listId)
         {
             await _repository.DeleteAllAsync(listId);
         }
-
-        
     }
 }

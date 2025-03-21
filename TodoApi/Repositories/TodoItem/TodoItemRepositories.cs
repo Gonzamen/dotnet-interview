@@ -2,34 +2,34 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Dtos;
-using TodoApi.Models;
+using Models = TodoApi.Models;
 
-namespace TodoApi.Repositories
+namespace TodoApi.Repositories.TodoItem
 {
-    public class TodoRepository : ITodoRepository
+    public class TodoItemRepository : ITodoItemRepository
     {
         private readonly TodoContext _context;
 
-        public TodoRepository(TodoContext context)
+        public TodoItemRepository(TodoContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<TodoItem>> GetAllAsync(long listId)
+        public async Task<IEnumerable<Models.TodoItem>> GetAllAsync(long listId)
         {
             return await _context.TodoItem.Where(item => item.ListId == listId).ToListAsync();
         }
 
-        public async Task<TodoItem> GetByIdAsync(long listId, long itemId)
+        public async Task<Models.TodoItem> GetByIdAsync(long listId, long itemId)
         {
             return await _context
                 .TodoItem.Where(item => item.ListId == listId && item.Id == itemId)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<TodoItem> AddAsync(long listId, CreateTodoItem item)
+        public async Task<Models.TodoItem> AddAsync(long listId, CreateTodoItem item)
         {
-            var todoItem = new TodoItem
+            var todoItem = new Models.TodoItem
             {
                 ListId = listId,
                 Name = item.Name,
@@ -40,7 +40,7 @@ namespace TodoApi.Repositories
             return todoItem;
         }
 
-        public async Task<TodoItem> UpdateAsync(long itemId, UpdateTodoItem item)
+        public async Task<Models.TodoItem> UpdateAsync(long itemId, UpdateTodoItem item)
         {
             var todoItem = await _context.TodoItem.FindAsync(itemId);
             if (todoItem == null)

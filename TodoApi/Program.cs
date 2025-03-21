@@ -1,9 +1,10 @@
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Repositories;
-using TodoApi.Services;
-
+using TodoApi.Repositories.TodoList;
+using TodoApi.Repositories.TodoItem;
+using TodoApi.Services.TodoList;
+using TodoApi.Services.TodoItem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,8 +35,11 @@ builder.Services.AddHangfireServer();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<ITodoRepository, TodoRepository>();
-builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+builder.Services.AddScoped<ITodoItemService, TodoItemService>();
+
+builder.Services.AddScoped<ITodoListRepository, TodoListRepository>();
+builder.Services.AddScoped<ITodoListService, TodoListService>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
